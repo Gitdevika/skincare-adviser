@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LuminaLuxe</title>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.1/css/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@600&display-swap">
+    <link rel="stylesheet" href="{{ url_for('static', filename='stylesindex.css') }}">
+   
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #fff;
+            margin: 0;
+            padding: 0;
+        }
+
+        #profile-photo-container {
+            text-align: center;
+            margin-top: 50px;
+        }
+
+        #profile-photo {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            border: 2px solid #ccc;
+            background-color: #f9f9f9;
+            display: inline-block;
+        }
+
+        #upload-icon,
+        #camera-icon {
+            width: 50px;
+            height: 50px;
+            margin-top: 20px;
+            cursor: pointer;
+        }
+
+        #upload-input,
+        #capture-btn {
+            display: none;
+        }
+        
+      
+    
+
+       
+        .skintype-radio {
+            opacity: 0.1; 
+        }
+
+       
+        /* Media Query for smaller screens */
+        @media (max-width: 768px) {
+            .main {
+                flex-direction: column; /* Stack items vertically */
+            }
+
+            .information,
+            .controls {
+                max-width: 100%; /* Take up full width on smaller screens */
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+       
+        <nav>
+            <div class="title-text">
+                <p>LuminaLuxe</p>
+                </div>
+                <h1 class="title">Tell us about yourself</h1> 
+        </nav>
+    </div><br><br>
+    <form action="\predict" method="POST" enctype="multipart/form-data">
+    <p class="description">Choose your gender</p><br><br>
+    <div class="wrapper">
+        <div class="card">
+          <a onclick="selectGender('female')">
+            <img src="{{ url_for('static', filename='g.jpg') }}" alt="Female">
+            <div class="info">
+              <h3>Female</h3>
+              <input type="radio" id="gender-female" name="gender" value="female">
+            </div>
+          </a>
+        </div>
+         
+        <div class="card">
+          <a onclick="selectGender('male')">
+            <img src="{{ url_for('static', filename='m.jpg') }}" alt="Male">
+            <div class="info">
+              <h3>Male</h3>
+              <input type="radio" id="gender-male" name="gender" value="male">
+            </div>
+          </a>
+        </div>
+        <input type="hidden" id="gender" name="gender">
+      </div>
+    </div><br><br><br>
+    <div class="main">
+        <div class="information">
+            <div class="overlay"></div>
+            <img src="{{ url_for('static', filename='face.jpg') }}" class="face">
+            <div id="circle">
+                <div class="skintype one">
+                    <div class="radio-background"></div>
+                    <input type="radio" class="skintype-radio" name="skin_type" id="skin-type-oily" value="oily">
+                    <div>
+                        <h1>Oily</h1>
+                        <p>Shiny, breakouts, pores</p>
+                    </div>
+                </div>
+                <div class="skintype two">
+                    <div class="radio-background"></div>
+                    <input type="radio" class="skintype-radio" name="skin_type" id="skin-type-dry" value="dry">
+                    <div>
+                        <h1>Dry</h1>
+                        <p>Dull, rough, flaky</p>
+                    </div>
+                </div>
+                <div class="skintype three">
+                    <div class="radio-background"></div>
+                    <input type="radio" class="skintype-radio" name="skin_type" id="skin-type-normal" value="normal">
+                    <div>
+                        <h1>Normal</h1>
+                        <p>Neither too dry nor oily</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="controls">
+            <img src="{{ url_for('static', filename='up.jpg') }}" id="UpBtn">
+            <h3>Skin Type</h3>
+            <img src="{{ url_for('static', filename='down.jpg') }}" id="downBtn">
+        </div> 
+    </div>
+
+
+    
+
+  
+    <div class="age">
+        <p class="description">Select your age group</p><br><br>
+        <div class="age-groups">
+        <label for="age_group-1">
+            <input type="radio" id="age-group-1" name="age_group" value="12-18">
+            12-18
+        </label><br>
+        <label for="age-group-2">
+            <input type="radio" id="age-group-2" name="age_group" value="18-30">
+            18-30
+        </label><br>
+        <label for="age-group-3">
+            <input type="radio" id="age-group-3" name="age_group" value="30-50">
+            30-50
+        </label><br>
+        <label for="age-group-4">
+            <input type="radio" id="age-group-4" name="age_group" value=">60">
+            60-above
+        </label><br>
+        </div><br>
+        <p class="description">Share a selfie</p>   
+    </div>  
+    
+    <div id="profile-photo-container">
+        <img id="profile-photo" src="{{ url_for('static', filename='profile.jpg') }}" alt="Profile Photo">
+        <br>
+        <label for="upload-input">
+            <img id="upload-icon" src="{{ url_for('static', filename='uploadf.jpg') }}" alt="Upload">
+        </label>
+        <label for="capture-btn">
+            <img id="camera-icon" src="{{ url_for('static', filename='camf.jpg') }}" alt="Capture">
+        </label>
+        <input type="file" name="file" id="upload-input" accept="image/*">
+        <button id="capture-btn">Capture Image</button><br><br><br><br><br>
+        <div class="hero">
+            <button class="btn" type="submit" value="Upload" id="btn">Submit
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div> 
+    </div>
+</form>
+
+    <script>
+        document.getElementById('upload-input').addEventListener('change', function(event) {
+            
+            var file = event.target.files[0];
+            if (file) {
+                var reader = new FileReader();
+                reader.onload = function() {
+                    var profilePhoto = document.getElementById('profile-photo');
+                    profilePhoto.src = reader.result;
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        document.getElementById('capture-btn').addEventListener('click', function(event) {
+            // Prevent form submission
+            event.preventDefault();
+
+            var video = document.createElement('video');
+            navigator.mediaDevices.getUserMedia({ video: true })
+                .then(function(stream) {
+                    video.srcObject = stream;
+                    video.play();
+                })
+                .catch(function(err) {
+                    console.log('An error occurred: ' + err);
+                });
+
+            video.addEventListener('loadedmetadata', function() {
+                var canvas = document.createElement('canvas');
+                var context = canvas.getContext('2d');
+                canvas.width = video.videoWidth;
+                canvas.height = video.videoHeight;
+                context.drawImage(video, 0, 0, canvas.width, canvas.height);
+                var profilePhoto = document.getElementById('profile-photo');
+                profilePhoto.src = canvas.toDataURL('image/jpeg', 1.0);
+                video.srcObject.getTracks().forEach(track => track.stop());
+            });
+        });
+    </script>
+    
+    <script>
+        //skintype rotation
+        var circle=document.getElementById("circle");
+        var UpBtn=document.getElementById("UpBtn");
+        var downBtn=document.getElementById("downBtn");
+        var rotateValue = circle.style.transform;
+        var rotateSum;
+
+        UpBtn.onclick=function()
+        {
+            rotateSum= rotateValue + "rotate(-90deg)";
+            circle.style.transform = rotateSum;
+            rotateValue = rotateSum;
+        }
+        downBtn.onclick=function()
+        {
+            rotateSum= rotateValue + "rotate(+90deg)";
+            circle.style.transform = rotateSum;
+            rotateValue = rotateSum;
+        }
+    </script>
+    
+    <script>
+        document.getElementById('go-btn').addEventListener('click', function() {
+            // Redirect to the next page
+            window.location.href = "next_page.html";
+        });
+    </script>
+    <script>
+        //button color change & bubbles
+        let btn =document.getElementById("btn");
+        let spans = document.getElementsByTagName("span");
+
+        btn.onclick=function(){
+            for(span of spans){
+                span.classList.add("anim");
+            
+            }
+            setTimeout(function(){
+                for(span of spans){
+                    span.classList.remove("anim");
+                
+                }
+            },500)
+        }
+    </script>
+    <script>
+        // Function to handle skin type selection
+        function selectSkinType(type) {
+            // Display the selected skin type in the console (you can replace this with your desired action)
+            console.log("Selected skin type:", type);
+        }
+
+        // Add event listeners to skin type controls
+        document.querySelectorAll('.skintype').forEach(function(element) {
+            element.addEventListener('click', function() {
+                var skinType = this.querySelector('h1').textContent;
+                selectSkinType(skinType);
+            });
+            // Add cursor pointer when hovered over
+            element.style.cursor = 'pointer';
+        });
+    </script>
+     <script>
+        // Extract error message from URL query parameters
+        const urlParams = new URLSearchParams(window.location.search);
+        const error = urlParams.get('error');
+        if (error) {
+          // Display error message in an alert box
+          alert(error);
+        }
+      </script>
+   
+</body>
+</html>

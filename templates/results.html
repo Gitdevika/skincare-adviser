@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Results</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #fff; /* Peach/Skin color */
+            color: #333; /* Dark text color */
+            margin: 0;
+            padding: 0;
+            position: relative; /* Make the body relative */
+        }
+        h1, h2, h3 {
+            color: #009688; /* Dark red */
+        }
+        .container h1,h3 {
+            text-align: center;
+            color: #000;
+        }
+
+        .container {
+            /*max-width: 800px;*/
+           
+            padding: 20px;
+            position: relative; /* Make the container relative */
+        }
+        .circle-container {
+            position: relative;
+            width: 14cm; /* Set the diameter of the circle */
+            height: 14cm;
+            margin: auto;
+            margin-bottom: 20px;
+            border-radius: 50%;
+            background-color: #009688; /* Dark red */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-size: 1.5em;
+            font-weight: bold;
+            cursor: pointer; /* Change cursor to pointer */
+            overflow: hidden; /* Hide overflowing bubbles */
+            text-align: center; /* Align text center */
+            white-space: pre-wrap; /* Allow line breaks */
+        }
+        .bubbles {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            pointer-events: none; /* Exclude from pointer events */
+        }
+        .bubble {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background-color: #fff; /* Green color */
+            animation: bubbleAnimation 3s ease infinite;
+        }
+        @keyframes bubbleAnimation {
+            0% {
+                transform: translate(0, 0) scale(1);
+                opacity: 1;
+            }
+            100% {
+                transform: translate(calc(var(--randomX) * (100vw - 14cm)), calc(var(--randomY) * (100vh - 14cm))) scale(2);
+                opacity: 0;
+            }
+        }
+
+        .product {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-evenly;
+            align-items: flex-start; /* Align items at the start of the cross axis */
+            margin-bottom: 20px;
+        }
+
+        .product-card {
+            width: calc(100% - 20px); /* Adjust the width for responsiveness */
+            max-width: 300px; /* Limit maximum width on larger screens */
+            text-align: center;
+            background-color: #fff;
+            padding: 50px 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px; /* Add margin between cards */
+            position: relative; /* Enable positioning */
+        }
+       
+        .product-card p {
+            font-family: "Roboto", sans-serif; /* or any other font you like */
+        }
+
+        .product-card img {
+            margin-left: 0px;
+            max-width: 100%;
+            height: auto;
+            margin-bottom: 10px;
+            width: 200px; /* Set a fixed width */
+            height: 200px; /* Set a fixed height */
+        }
+
+        /* Style for Buy now button container */
+        .buy-now-container {
+            position: absolute; /* Position the container */
+            bottom: 10px; /* Distance from the bottom */
+            left: 50%; /* Align horizontally */
+            transform: translateX(-50%); /* Center horizontally */
+        }
+
+        /* Style for Buy now button */
+        .product-card a {
+            display: inline-block;
+            background-color: #000;
+            color: #fff;
+            padding: 8px 12px;
+            text-decoration: none;
+            border-radius: 4px;
+            transition: background-color 0.3s ease;
+        }
+
+        /* Hover effect */
+        .product-card a:hover {
+            background-color: #fff;
+            color: black;
+        }
+
+        /* Hover effect for product card */
+        .product-card:hover {
+            background-color: #009688;
+            transition: background-color 0.3s ease; /* Add transition effect */
+        }
+
+        .disclaimer-container {
+            position: absolute;
+            top: 40px; /* Adjust the distance from the top */
+            left: 20px; /* Adjust the distance from the left */
+            cursor: pointer; /* Change cursor to pointer on hover */
+            text-decoration: underline; /* Add underline on hover */
+        }
+
+        .disclaimer-text {
+            display: none; /* Hide by default */
+            position: absolute;
+            top: calc(100% + 10px); /* Position below the container */
+            left: 0; /* Position at the left edge */
+            transform: translateY(10px); /* Add a slight offset for better visibility */
+            background-color: #009688; /* Semi-transparent white background */
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Shadow */
+            width: 300px; /* Set the width */
+            text-align: left; /* Align the text to the left */
+            z-index: 1; /* Ensure it appears above other content */
+        }
+
+        /* Show disclaimer text on hover */
+        .disclaimer-container:hover .disclaimer-text {
+            display: block;
+        }
+
+        /* Home icon */
+        .home-icon {
+            position: absolute;
+            top: 40px;
+            right: 30px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Your Personalized Skincare Analysis</h1><br><br>
+        <div class="circle-container">
+            <div class="bubbles"></div>
+            <p style="margin: 0;">Acne: {{ results.acne1 }}<br><br>Dark Spots: {{ results.darkspots1 }}<br><br>Wrinkles: {{ results.wrinkles1 }}</p>
+            </div><br><br><br>
+        <h1>Try These Out!</h1>
+        <h3>Great news! Based on your skin analysis, we've picked out some skincare heroes to target your unique concerns and help you achieve your goals!</h3>
+        {% for product in product_info %}
+        <div class="product animated">
+            <div class="product-card">
+                <img src="{{ product[8] }}" alt="Product Image"><hr>
+                <p style="font-size: 25px; font-weight: bold;">{{ product[7] }}</p>
+                <p style="font-size: 25px;">A product from {{ product[5] }}</p>
+                <p>Product name: {{ product[6] }}</p>
+                <p style="font-size: 25px;">₹ {{ product[9] }}</p>
+                <!-- Buy now button container -->
+                <div class="buy-now-container">
+                    <!-- Buy now button -->
+                    <a href="{{ product[10] }}" target="_blank">Buy now</a>
+                </div>
+            </div>
+            <!-- If you have a second product -->
+            <div class="product-card">
+                <img src="{{ product[14] }}" alt="Product Image"><hr>
+                <p style="font-size: 25px; font-weight: bold;">{{ product[13] }}</p>
+
+                <p style="font-size: 25px;">A product from {{ product[11] }}</p>
+                <p>Product name: {{ product[12] }}</p>
+                <p style="font-size: 25px;">₹ {{ product[15] }}</p>
+                <!-- Buy now button container -->
+                <div class="buy-now-container">
+                    <!-- Buy now button -->
+                    <a href="{{ product[16] }}" target="_blank">Buy now</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+
+       <!-- Disclaimer container -->
+        <div class="disclaimer-container">
+            <img src="templates/info_icon.png" alt="Info Icon" width="30" height="30">
+            <span class="disclaimer-text">These product recommendations are for informational purposes only and do not constitute medical advice. Always consult with a dermatologist before starting any new skincare regimen, especially if you have any underlying skin conditions.</span>
+        </div>
+         <!-- Home icon -->
+        <a class="home-icon" href="{{ url_for('landing') }}"><img src="templates/home_icon.png" alt="Home Icon" width="30" height="30"></a>
+    </div>
+
+    
+    <script>
+        // JavaScript for generating bubbles
+        const bubblesContainer = document.querySelector('.bubbles');
+
+        // Generate bubbles when the page loads
+        window.onload = generateBubbles;
+
+        function generateBubbles() {
+            for (let i = 0; i < 20; i++) {
+                const bubble = document.createElement('div');
+                bubble.classList.add('bubble');
+                bubble.style.left = `${Math.random() * 100}%`;
+                bubble.style.top = `${Math.random() * 100}%`;
+                bubble.style.animationDuration = `${Math.random() * 2 + 1}s`;
+                bubblesContainer.appendChild(bubble);
+            }
+        }
+    </script>
+</body>
+</html>
